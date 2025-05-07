@@ -33,6 +33,9 @@ public class BankController {
 				user.getEmail() != null ||
 				user.getPassword() != null) {
 			User newUser = bnkServ.createUser(user);
+			if(newUser == null) {
+				return new ResponseEntity<Object>("invalid phone number", HttpStatus.CREATED);
+			}
 			return new ResponseEntity<Object>(newUser, HttpStatus.CREATED);
 		}
 		return new ResponseEntity<Object>(null, HttpStatus.BAD_REQUEST);
@@ -47,6 +50,8 @@ public class BankController {
 			Optional<User> userOp = bnkServ.getUser(userId);
 			if(userOp.isPresent()) {
 				user = userOp.get(); 
+			}else {
+				return new ResponseEntity<Object>("User Not Found", HttpStatus.OK);
 			}
 			return new ResponseEntity<Object>(user, HttpStatus.OK);
 		}else {
